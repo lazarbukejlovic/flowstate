@@ -4,7 +4,7 @@
 
 Paste any meeting transcript. Flowstate AI extracts every decision, task, owner, deadline, and risk — and builds a live execution workspace in under 30 seconds.
 
-**Public demo (no login):** [`/demo`](http://localhost:3000/demo) — Q2 Product Launch Sync
+**Public (no login):** https://flowstate-zeta-henna.vercel.app/ — Q2 Product Launch Sync
 
 ---
 
@@ -212,13 +212,13 @@ npx ts-node --compiler-options '{"module":"commonjs"}' prisma/seed.ts
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Open [https://flowstate-zeta-henna.vercel.app/](https://flowstate-zeta-henna.vercel.app/)
 
 ---
 
 ## Demo Flow
 
-1. Open [http://localhost:3000](http://localhost:3000) — see the landing page with animated hero
+1. Open [https://flowstate-zeta-henna.vercel.app/](https://flowstate-zeta-henna.vercel.app/) — see the landing page with animated hero
 2. Click **Try interactive demo** → `/demo` — no login, full workspace with 8 tasks · 4 decisions · 3 risks
 3. Click any task card → task detail drawer slides in (source quote, AI confidence, AI reason)
 4. Switch tabs: Board · Decisions · Risks · Follow-ups · Activity
