@@ -14,7 +14,21 @@ Every meeting ends with action items scattered across someone's notes, Slack mes
 
 ## What Flowstate Does
 
-Paste a transcript → Flowstate AI (claude-opus-4-7) extracts tasks with owners and deadlines, key decisions with context, risks with severity and mitigation, and follow-up items. A live kanban workspace appears instantly — nothing to set up, nothing to fill in.
+Bring a meeting in via any supported source → Flowstate AI (claude-opus-4-7) extracts tasks with owners and deadlines, key decisions with context, risks with severity and mitigation, and follow-up items. A live kanban workspace appears instantly — nothing to set up, nothing to fill in.
+
+---
+
+## Implemented Source Inputs
+
+Flowstate supports multiple ways to create a workspace from `/dashboard/new`:
+
+- **Paste a meeting transcript manually** — works with any text format (Zoom, Teams, Loom, Otter.ai, manual notes).
+- **Record a voice note** — capture audio directly in the browser via `MediaRecorder`, then transcribe it to meeting text using the OpenAI Whisper API (server-side `/api/transcribe`, key never leaves the server).
+- **Import a Zoom transcript file** — upload a `.vtt`, `.srt`, or `.txt` file exported from a recorded Zoom meeting. Timestamps, cue numbers, and WEBVTT/SRT metadata are parsed out client-side; speaker tags (`<v Name>`) become readable `Name:` prefixes.
+
+All three inputs feed the same transcript-to-workspace pipeline, which generates decisions, owners, action items, risks, follow-ups, and the delivery board.
+
+> **Honest note:** the Zoom flow is a transcript-file import, not a live Zoom OAuth or Cloud Recording API integration. The voice flow uses OpenAI Whisper for transcription, not a custom speech model. Both are deliberately scoped portfolio features.
 
 ---
 
@@ -172,20 +186,22 @@ Supabase client is installed and configured. Full realtime subscriptions (live c
 | Decision | Rationale |
 |---|---|
 | No full Supabase realtime | Complexity vs. time — activity log provides the "alive" feeling |
-| No Whisper transcription | Transcript paste covers 90% of use cases; audio upload is a V2 feature |
 | Basic RBAC enforcement | Roles are modeled in DB; deep permission checks deferred to V2 |
 | Demo workspace, not live collab | Fastest path to a convincing demo without WebSocket complexity |
+| Zoom file import, not Zoom OAuth | Users export a transcript file; live OAuth/Cloud-Recording is a roadmap item |
 
 ---
 
-## What I'd Build Next
+## Future Roadmap
 
-1. **Real-time presence** — Supabase broadcast channels for live cursor + task updates
-2. **Audio transcription** — Whisper API integration at `/api/transcribe`
-3. **Slack/Notion integration** — Push decisions and tasks to connected tools
-4. **AI assistant in workspace** — Ask questions about the meeting, get answers from context
-5. **Team invites & RBAC** — Full permission enforcement with workspace invite flow
-6. **Mobile app** — Record and process meetings directly from your phone
+The following are deliberately scoped as future production upgrades — none of these are claimed to exist in the current codebase:
+
+1. **Direct Zoom OAuth / Cloud Recording API** — pull transcripts straight from Zoom without the manual file export step.
+2. **Real-time team presence** — Supabase broadcast channels for live cursors and task updates across collaborators.
+3. **Slack and Notion exports** — push decisions, tasks, and execution briefs to connected tools.
+4. **Context-aware AI assistant inside each workspace** — ask questions about a specific meeting and get answers grounded in its transcript.
+5. **Team invites and RBAC** — full permission enforcement with a workspace invite flow on top of the modelled roles.
+6. **Mobile meeting capture flow** — record meetings directly from a phone and process them in-app.
 
 ---
 
